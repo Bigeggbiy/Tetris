@@ -4,21 +4,21 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// A timer
+/// A timer.
 /// </summary>
-public class Timer : MonoBehaviour 
+public class Timer : MonoBehaviour
 {
 	#region Fields
 
 	// Timer duration
-	float totalSeconds = 0;
+	private float totalSeconds = 0;
 
 	// Timer execution
-	float elapsedSeconds = 0;
-	bool running = false;
+	private float elapsedSeconds = 0;
+	private bool running = false;
 
 	// Support for Finished property
-	bool started = false;
+	private bool started = false;
 
 	#endregion
 
@@ -28,11 +28,11 @@ public class Timer : MonoBehaviour
 	/// Sets the duration of the timer.
 	/// The duration can only be set if the timer isn't currently running.
 	/// </summary>
-	public float Duration 
+	public float Duration
 	{
-		set 
+		set
 		{
-			if (!running) 
+			if (!running)
 			{
 				totalSeconds = value;
 			}
@@ -43,17 +43,25 @@ public class Timer : MonoBehaviour
 	/// Gets whether or not the timer has finished running.
 	/// This property returns false if the timer has never been started.
 	/// </summary>
-	public bool Finished 
+	public bool Finished
 	{
-		get { return started && !running; } 
+		get { return started && !running; }
 	}
 
 	/// <summary>
 	/// Gets whether or not the timer is currently running.
 	/// </summary>
-	public bool Running 
+	public bool Running
 	{
 		get { return running; }
+	}
+
+	/// <summary>
+	/// Gets the elapsed time of the timer.
+	/// </summary>
+	public float ElapsedTime
+	{
+		get { return elapsedSeconds; }
 	}
 
 	#endregion
@@ -61,19 +69,17 @@ public class Timer : MonoBehaviour
 	#region Methods
 
 	// Update is called once per frame
-	void Update () 
+	void Update()
 	{
 		// Update timer and check for finished
-		if (running) 
+		if (running)
 		{
 			elapsedSeconds += Time.deltaTime;
-			if (elapsedSeconds >= totalSeconds) 
+
+			if (elapsedSeconds >= totalSeconds && totalSeconds != -1)
 			{
 				running = false;
-				if (OnTimerFinished != null)
-				{
-					OnTimerFinished.Invoke();
-				}
+				OnTimerFinished?.Invoke();
 			}
 		}
 	}
@@ -82,10 +88,10 @@ public class Timer : MonoBehaviour
 	/// Runs the timer.
 	/// The timer only runs if the total seconds is larger than 0.
 	/// </summary>
-	public void Run () 
+	public void Run()
 	{
 		// Only run with valid duration
-		if (totalSeconds > 0) 
+		if (totalSeconds > 0 || totalSeconds == -1)
 		{
 			started = true;
 			running = true;
@@ -98,7 +104,7 @@ public class Timer : MonoBehaviour
 	/// </summary>
 	public void Pause()
 	{
-		if (running) 
+		if (running)
 		{
 			running = false;
 		}
@@ -109,7 +115,7 @@ public class Timer : MonoBehaviour
 	/// </summary>
 	public void Resume()
 	{
-		if (started && !running) 
+		if (started && !running)
 		{
 			running = true;
 		}
