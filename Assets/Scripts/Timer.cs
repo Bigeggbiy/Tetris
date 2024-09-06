@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events; // For UnityEvent if you want to use it
+using UnityEngine.Events;
 
 /// <summary>
 /// A timer
@@ -70,7 +70,6 @@ public class Timer : MonoBehaviour
 			if (elapsedSeconds >= totalSeconds) 
 			{
 				running = false;
-				// Trigger any event/callback if needed
 				if (OnTimerFinished != null)
 				{
 					OnTimerFinished.Invoke();

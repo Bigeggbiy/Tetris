@@ -29,7 +29,7 @@ public class Tetromino : MonoBehaviour
     {
         // Set random sprite for tetromino
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        int spriteNumber = Random.Range(0, 7); // Adjusted range to include all pieces
+        int spriteNumber = Random.Range(0, 7);
 
         switch (spriteNumber)
         {
@@ -71,31 +71,31 @@ public class Tetromino : MonoBehaviour
     void Update()
     {
         // Move tetromino left, right, down
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) 
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             RotateTetromino();
         }
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) 
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MoveTetromino(Vector3.left);
         }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) 
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             MoveTetromino(Vector3.down);
         }
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) 
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             MoveTetromino(Vector3.right);
         }
     }
 
-    // Moves the tetromino in the given direction
+    // Moves the tetromino
     void MoveTetromino(Vector3 direction)
     {
         transform.position += direction;
     }
 
-    // Rotates the tetromino 90 degrees clockwise
+    // Rotates the tetromino 90 degrees
     void RotateTetromino()
     {
         transform.Rotate(0, 0, -90);
