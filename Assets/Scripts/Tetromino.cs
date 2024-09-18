@@ -29,34 +29,7 @@ public class Tetromino : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set random sprite for tetromino
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        int spriteNumber = Random.Range(0, 7);
-
-        switch (spriteNumber)
-        {
-            case 0:
-                spriteRenderer.sprite = Tetris_piece_O;
-                break;
-            case 1:
-                spriteRenderer.sprite = Tetris_piece_S;
-                break;
-            case 2:
-                spriteRenderer.sprite = Tetris_piece_Z;
-                break;
-            case 3:
-                spriteRenderer.sprite = Tetris_piece_T;
-                break;
-            case 4:
-                spriteRenderer.sprite = Tetris_piece_L;
-                break;
-            case 5:
-                spriteRenderer.sprite = Tetris_piece_J;
-                break;
-            case 6:
-                spriteRenderer.sprite = Tetris_piece_I;
-                break;
-        }
+ 
     }
 
 
