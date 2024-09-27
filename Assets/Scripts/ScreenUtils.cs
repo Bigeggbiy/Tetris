@@ -71,7 +71,7 @@ public static class ScreenUtils
         get 
         {
             CheckScreenSizeChanged();
-            return screenBottom; 
+            return screenBottom+1; 
         }
     }
 
