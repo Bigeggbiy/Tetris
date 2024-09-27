@@ -30,6 +30,7 @@ public class Timer : MonoBehaviour
 	/// </summary>
 	public float Duration
 	{
+		get { return totalSeconds; } // used in GameInitializer.cs
 		set
 		{
 			if (!running)
