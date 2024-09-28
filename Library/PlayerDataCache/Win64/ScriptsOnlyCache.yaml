@@ -1,0 +1,96 @@
+ScriptsOnlyBuild:
+  usedScripts:
+    Assembly-CSharp.dll:
+    - GameInitializer
+    - ScreenWrapper
+    - Tetromino
+    - TetrominoSpawner
+    - Timer
+  serializedClasses:
+    UnityEngine.CoreModule:
+    - UnityEngine.Events.PersistentCallGroup
+    - UnityEngine.Events.UnityEvent
+  methodsToPreserve: []
+  sceneClasses:
+    Assets/Scenes/Main.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 50
+      Script: {instanceID: 0}
+    - Class: 61
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 1522}
+    - Class: 114
+      Script: {instanceID: 1524}
+    - Class: 114
+      Script: {instanceID: 1542}
+    - Class: 114
+      Script: {instanceID: 1544}
+    - Class: 114
+      Script: {instanceID: 1546}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 212
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+  scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: d76bd05183726b41afa33432e05e71f1
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GameInitializer
+  - hash:
+      serializedVersion: 2
+      Hash: 92a59026d511e9cda23f0f775f13a938
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: Tetromino
+  - hash:
+      serializedVersion: 2
+      Hash: f8f2a4d8cad2b219de928c8f09301faf
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GridBackground
+  - hash:
+      serializedVersion: 2
+      Hash: 5ad62b67c84977e16af20e8a70be7953
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: Timer
+  - hash:
+      serializedVersion: 2
+      Hash: 64f20c0226789e791d1bae730621d669
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: ScreenWrapper
+  - hash:
+      serializedVersion: 2
+      Hash: ab10495785180f1df284495423a6534d
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: TetrominoSpawner
+  platform: 19
+  scenePathNames:
+  - Assets/Scenes/Main.unity
+  playerPath: C:/Users/Cole/Downloads/Tetris.exe
