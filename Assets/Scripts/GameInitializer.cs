@@ -8,7 +8,11 @@ public class GameInitializer : MonoBehaviour
     /// <summary>
     /// Awake is called before Start
     /// </summary>
-	void Awake()
+    public float initialFallSpeed = 10f; // Initial speed, default 1f
+    public float speedIncreaseInterval = 0.01f; // Time in seconds to increase speed, default 30f
+    public float speedIncreaseAmount = 700000000f; // default .1f Speed increase amount
+
+    void Awake()
     {
         // initialize screen utils
         ScreenUtils.Initialize();
@@ -23,6 +27,17 @@ public class GameInitializer : MonoBehaviour
         gameTimer = gameObject.AddComponent<Timer>();
         gameTimer.Duration = -1;  // Set the interval duration
         gameTimer.Run();  // Start the timer
+
+        StartCoroutine(IncreaseSpeed());
+    }
+
+    IEnumerator IncreaseSpeed()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(speedIncreaseInterval);
+            gameTimer.Duration = Mathf.Max(0.1f, gameTimer.Duration - speedIncreaseAmount);
+        }
     }
 
     /// <summary>
@@ -31,7 +46,7 @@ public class GameInitializer : MonoBehaviour
     /// <returns></returns>
     public float GetSpeed()
     {
-        float speed = Mathf.Round((gameTimer.ElapsedTime / 60) * 10) / 10 + 1;
+        float speed = Mathf.Round((gameTimer.ElapsedTime / 60) * 10) / 10 + initialFallSpeed;
         return speed;
     }
 }
