@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class CreateGameBoard : MonoBehaviour
 {
     public GameObject squarePrefab; // Reference to the square prefab
     public int columns = 10; // Number of squares per row

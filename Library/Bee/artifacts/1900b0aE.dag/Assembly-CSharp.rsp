@@ -377,6 +377,7 @@
 "Assets/Scripts/GridBackground.cs"
 "Assets/Scripts/ScreenUtils.cs"
 "Assets/Scripts/ScreenWrapper.cs"
+"Assets/Scripts/Square.cs"
 "Assets/Scripts/Tetromino.cs"
 "Assets/Scripts/TetrominoSpawner.cs"
 "Assets/Scripts/Timer.cs"
