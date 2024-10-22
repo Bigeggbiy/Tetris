@@ -14,6 +14,12 @@ public class CreateGameBoard : MonoBehaviour
         // Create the main parent object called "GameBoard"
         GameObject gameBoard = new GameObject("GameBoard");
 
+        // Calculate the offsets to center the board, the position (-5,-10.5,0) seems to fit perfectly
+        // if the scene size = 10, this just moves half a board width to the left, and half a board 
+        // height down
+        float xOffset = (columns * squareSize) / 2f;
+        float yOffset = (rows * squareSize) / 2f;
+
         // Loop through each row (starting from the bottom, row 0 is at the bottom)
         for (int row = 1; row <= rows; row++)
         {
@@ -24,9 +30,12 @@ public class CreateGameBoard : MonoBehaviour
             // Loop through each column within the current row
             for (int col = 1; col <= columns; col++)
             {
-                // Instantiate a square prefab at the correct position
+                // Instantiate a square prefab at the correct position, with offsets applied
                 // Since we want the grid to build from the bottom, we'll use row * squareSize for Y position
-                GameObject square = Instantiate(squarePrefab, new Vector3(col * squareSize, row * squareSize, 0), Quaternion.identity);
+                float xPos = (col * squareSize) - xOffset;
+                float yPos = (row * squareSize) - yOffset;
+
+                GameObject square = Instantiate(squarePrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
 
                 // Name the square based on its row and column (e.g., "Square_3_5")
                 square.name = "Square_" + row + "_" + col;
@@ -35,5 +44,9 @@ public class CreateGameBoard : MonoBehaviour
                 square.transform.parent = rowParent.transform;
             }
         }
+
+        // Center the gameboard itself at (-5,-10.5,0), this lowers the board by .5, which fits screen
+        // size = 10 perfectly for some reason
+        gameBoard.transform.position = new Vector3(0, -0.5f, 0);
     }
 }
