@@ -32,17 +32,16 @@ public class TetrominoSpawner : MonoBehaviour
             Debug.LogError("Game board or top row squares not initialized!");
             return;
         }
-
         spawnTimer = gameObject.AddComponent<Timer>();
-        spawnTimer.Duration = gameSpeed.GetSpeed();
         spawnTimer.OnTimerFinished.AddListener(SpawnTetromino);
-        spawnTimer.Run();
 
         tetrominoPrefabs = new List<GameObject>
         {
             tetrominoI, tetrominoJ, tetrominoL,
             tetrominoO, tetrominoS, tetrominoT, tetrominoZ
         };
+        SpawnTetromino();
+
     }
 
     /// <summary>
