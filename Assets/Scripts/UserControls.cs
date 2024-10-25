@@ -1,41 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events; // Add this directive
 
 public class UserControls : MonoBehaviour
 {
     public float moveDistance = 1f; // Pieces move 1 unit per input
 
-    // Update is called once per frame
+    private Rigidbody2D tetrominoRB;
+    void Start() // Fixed casing for Start method
+    {
+        tetrominoRB = GetComponent<Rigidbody2D>();
+    }
+
     void Update()
     {
-        // Detect left arrow key input
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            RotateTetromino();
+        }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            MovePiece(Vector3.left); // Moves piece to the left
+            MovePiece(Vector3.left);
         }
-
-        // Detect right arrow key input
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            MovePiece(Vector3.right); //Moves piece to the right
+            MovePiece(Vector3.right);
         }
-
-        // Detect down key input
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            MovePiece(Vector3.down); // Moves piece down
+            MovePiece(Vector3.down);
         }
-        
     }
-    /* You can also use GetKey() instead of GetKeyDown() to hold down an arrow key and contiuously
-    move, but this moves the pieces super fast and is hard to control without further enhancements, 
-    we can improve this in V.2  */
-    
-    
-    // Funtion to move pieces in a given direction
+
     void MovePiece(Vector3 direction)
     {
         transform.position += direction * moveDistance;
     }
+
+    void RotateTetromino()
+    {
+        ///need to be implimented
+    }
+
+   
 }

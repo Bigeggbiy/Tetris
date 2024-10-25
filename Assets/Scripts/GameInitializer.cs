@@ -4,30 +4,20 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour
 {
-    Timer gameTimer;
-    /// <summary>
-    /// Awake is called before Start
-    /// </summary>
-    public float initialFallSpeed = 10f; // Initial speed, default 1f
-    public float speedIncreaseInterval = 0.01f; // Time in seconds to increase speed, default 30f
-    public float speedIncreaseAmount = 700000000f; // default .1f Speed increase amount
+    public float initialFallSpeed = 2f; // Default fall speed (2 units per second down)
+    public float speedIncreaseInterval = 30f; // Increase speed every 30 seconds
+    public float speedIncreaseAmount = 0.1f; // Increase speed by 0.1 units each time
+
+    private float currentFallSpeed;
 
     void Awake()
     {
-        // initialize screen utils
         ScreenUtils.Initialize();
     }
 
-    /// <summary>
-    /// Start is called before the first frame update
-    /// </summary>
     void Start()
     {
-        // Add and set up the Timer component
-        gameTimer = gameObject.AddComponent<Timer>();
-        gameTimer.Duration = -1;  // Set the interval duration
-        gameTimer.Run();  // Start the timer
-
+        currentFallSpeed = initialFallSpeed; // Set initial speed
         StartCoroutine(IncreaseSpeed());
     }
 
@@ -36,17 +26,13 @@ public class GameInitializer : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(speedIncreaseInterval);
-            gameTimer.Duration = Mathf.Max(0.1f, gameTimer.Duration - speedIncreaseAmount);
+            currentFallSpeed += speedIncreaseAmount; // Increase speed over time
         }
     }
 
-    /// <summary>
-    /// Sets the speed of the game
-    /// </summary>
-    /// <returns></returns>
     public float GetSpeed()
     {
-        float speed = Mathf.Round((gameTimer.ElapsedTime / 60) * 10) / 10 + initialFallSpeed;
-        return speed;
+        // speed is negative so the tetromino falls down
+        return -Mathf.Abs(currentFallSpeed);
     }
 }

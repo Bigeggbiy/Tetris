@@ -66,11 +66,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ScreenWrapper.cs" />
     <Compile Include="Assets\Scripts\TetrominoSpawner.cs" />
-    <Compile Include="Assets\Scripts\Tetromino.cs" />
     <Compile Include="Assets\Scripts\ScreenUtils.cs" />
     <Compile Include="Assets\Scripts\GridBackground.cs" />
     <Compile Include="Assets\Scripts\Square.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
+    <Compile Include="Assets\Scripts\blocks.cs" />
     <Compile Include="Assets\Scripts\GameInitializer.cs" />
     <Compile Include="Assets\Scripts\CreateGameboard.cs" />
     <Compile Include="Assets\Scripts\UserControls.cs" />
