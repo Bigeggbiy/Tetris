@@ -1,49 +1,79 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TetrominoSpawner : MonoBehaviour
 {
-    [SerializeField]
-    GameObject prefabTetromino;  // The prefab for spawning tetrominoes
+    [SerializeField] GameObject tetrominoI;
+    [SerializeField] GameObject tetrominoJ;
+    [SerializeField] GameObject tetrominoL;
+    [SerializeField] GameObject tetrominoO;
+    [SerializeField] GameObject tetrominoS;
+    [SerializeField] GameObject tetrominoT;
+    [SerializeField] GameObject tetrominoZ;
 
-    Timer spawnTimer;            // Reference to the Timer component
-    GameInitializer gameSpeed;   // Reference to the GameInitializer component
+    private Timer spawnTimer;
+    private GameInitializer gameSpeed;
+    private CreateGameBoard gameBoard;  // Reference to the game board
+
+    private List<GameObject> tetrominoPrefabs;
 
     void Start()
     {
-        gameSpeed = gameObject.GetComponent<GameInitializer>();  // Get the GameInitializer component
+        gameSpeed = GetComponent<GameInitializer>();
+        if (gameSpeed == null)
+        {
+            Debug.LogError("GameInitializer component is missing!");
+            return;
+        }
 
-        // Add and set up the Timer component
+        gameBoard = FindObjectOfType<CreateGameBoard>();
+        if (gameBoard == null || gameBoard.topRowSquares.Count == 0)
+        {
+            Debug.LogError("Game board or top row squares not initialized!");
+            return;
+        }
+
         spawnTimer = gameObject.AddComponent<Timer>();
-        spawnTimer.Duration = gameSpeed.GetSpeed();  // Set the interval duration
-        spawnTimer.OnTimerFinished.AddListener(SpawnTetromino);  // Add listener to spawn tetromino
-        spawnTimer.Run();  // Start the timer
+        spawnTimer.Duration = gameSpeed.GetSpeed();
+        spawnTimer.OnTimerFinished.AddListener(SpawnTetromino);
+        spawnTimer.Run();
+
+        tetrominoPrefabs = new List<GameObject>
+        {
+            tetrominoI, tetrominoJ, tetrominoL,
+            tetrominoO, tetrominoS, tetrominoT, tetrominoZ
+        };
     }
 
     /// <summary>
-    /// Spawns a new Tetromino at the top center of the screen
+    /// Spawns a random Tetromino at a random square in the top row.
     /// </summary>
     void SpawnTetromino()
     {
-        // Calculate the spawn position
-        float randomPosition = Mathf.Round(Random.Range(ScreenUtils.ScreenLeft, ScreenUtils.ScreenRight)); // Randomize the position of the tetromino
-        Vector3 tetrominoPos = new Vector3(randomPosition, ScreenUtils.ScreenTop, 0);
+        if (tetrominoPrefabs.Count == 0) return;
 
-        // Set the speed of the tetromino
-        float speed = gameSpeed.GetSpeed();  // Adjust the speed as needed
+        // Select a random tetromino prefab
+        GameObject randomTetromino = tetrominoPrefabs[Random.Range(0, tetrominoPrefabs.Count)];
 
-        // Instantiate and initialize the tetromino
-        GameObject tetromino = Instantiate(prefabTetromino, tetrominoPos, Quaternion.identity);
-        tetromino.GetComponent<Tetromino>().Initialize(tetrominoPos, speed);
+        // Select a random square from the top row
+        Transform randomSquare = gameBoard.topRowSquares[Random.Range(0, gameBoard.topRowSquares.Count)];
 
-        spawnTimer.Duration = speed; // Update spawn timer based on speed
+        // Instantiate the tetromino at the square's position
+        GameObject newTetromino = Instantiate(randomTetromino, randomSquare.position, Quaternion.identity);
+
+        // Set the tetromino's falling speed (optional)
+        Rigidbody2D rb = newTetromino.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = new Vector2(0, -gameSpeed.GetSpeed());
+        }
 
         // Restart the timer for the next spawn
+        spawnTimer.Duration = gameSpeed.GetSpeed();
         spawnTimer.Run();
     }
 
-    void HandleGameOver()
+    public void HandleGameOver()
     {
         spawnTimer.Pause();
     }
