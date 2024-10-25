@@ -53,7 +53,7 @@ public class TetrominoSpawner : MonoBehaviour
         if (tetrominoPrefabs.Count == 0) return;
 
         GameObject randomTetromino = tetrominoPrefabs[Random.Range(0, tetrominoPrefabs.Count)];
-        Transform randomSquare = gameBoard.topRowSquares[Random.Range(0, gameBoard.topRowSquares.Count)];
+        Transform randomSquare = gameBoard.topRowSquares[4];
 
         GameObject newTetromino = Instantiate(randomTetromino, randomSquare.position, Quaternion.identity);
 
