@@ -29,7 +29,7 @@ public class CreateGameBoard : MonoBehaviour
         for (int col = 1; col <= columns; col++)
         {
             float xPos = (col * squareSize) - xOffset;
-            float yPos = (row * squareSize) - yOffset;
+            float yPos = (row * squareSize) - yOffset + 1;
 
             GameObject square = Instantiate(squarePrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
             square.name = "Square_" + row + "_" + col;
