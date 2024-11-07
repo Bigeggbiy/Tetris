@@ -52,7 +52,7 @@ public class UserControls : MonoBehaviour
         ///need to be implimented
     }
 
-    bool canMove()
+   public bool canMove()
     {
         foreach (Transform children in transform)
         {
