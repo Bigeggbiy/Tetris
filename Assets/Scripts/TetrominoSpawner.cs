@@ -57,6 +57,16 @@ public class TetrominoSpawner : MonoBehaviour
 
         GameObject newTetromino = Instantiate(randomTetromino, randomSquare.position, Quaternion.identity);
 
+        // Apply half-unit translation for tetrominoI and tetrominoO
+        if (randomTetromino == tetrominoI)
+        {
+            newTetromino.transform.Translate(0.5f, 0, 0); // Move right by 0.5 units
+        }
+        else if (randomTetromino == tetrominoO)
+        {
+            newTetromino.transform.Translate(-0.5f, 0, 0); // Move left by 0.5 units
+        }
+
         Rigidbody2D rb = newTetromino.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
