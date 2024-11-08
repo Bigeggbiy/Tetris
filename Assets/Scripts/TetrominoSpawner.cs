@@ -32,10 +32,10 @@ public class TetrominoSpawner : MonoBehaviour
             Debug.LogError("Game board or top row squares not initialized!");
             return;
         }
-        spawnTimer = gameObject.AddComponent<Timer>();
-        spawnTimer.Duration = gameSpeed.GetSpeed();
-        spawnTimer.OnTimerFinished.AddListener(SpawnTetromino);
-        spawnTimer.Run();
+        //spawnTimer = gameObject.AddComponent<Timer>();
+        //spawnTimer.Duration = gameSpeed.GetSpeed();
+        //spawnTimer.OnTimerFinished.AddListener(SpawnTetromino);
+        //spawnTimer.Run();
 
         tetrominoPrefabs = new List<GameObject>
         {
@@ -48,7 +48,7 @@ public class TetrominoSpawner : MonoBehaviour
     /// <summary>
     /// Spawns a random Tetromino at a random square in the top row.
     /// </summary>
-    void SpawnTetromino()
+    public void SpawnTetromino()
     {
         if (tetrominoPrefabs.Count == 0) return;
 
@@ -60,11 +60,11 @@ public class TetrominoSpawner : MonoBehaviour
         // Apply half-unit translation for tetrominoI and tetrominoO
         if (randomTetromino == tetrominoI)
         {
-            newTetromino.transform.Translate(0.5f, 0, 0); // Move right by 0.5 units
+            newTetromino.transform.Translate(0.5f, -0.5f, 0); // Move right by 0.5 units
         }
         else if (randomTetromino == tetrominoO)
         {
-            newTetromino.transform.Translate(-0.5f, 0, 0); // Move left by 0.5 units
+            newTetromino.transform.Translate(-0.5f, -0.5f, 0); // Move left by 0.5 units
         }
 
         Rigidbody2D rb = newTetromino.GetComponent<Rigidbody2D>();

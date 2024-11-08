@@ -32,7 +32,6 @@ public class TetrominoController : MonoBehaviour
             {
                 // Stop falling if the piece can't move down
                 isFalling = false;
-                //LockPieceInPlace();
             }
         }
     }
@@ -48,10 +47,4 @@ public class TetrominoController : MonoBehaviour
         }
         return true;
     }
-
-    /*private void LockPieceInPlace()
-    {
-        return; // Does nothing for now
-        // Logic to "lock" the piece into the board, stop movement, and initiate the next piece spawn
-    }*/
 }
