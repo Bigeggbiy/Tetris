@@ -18,7 +18,7 @@ public class UserControls : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            //RotateTetromino();
+            transform.Rotate(0, 0, -90);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {

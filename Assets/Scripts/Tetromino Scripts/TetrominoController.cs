@@ -10,6 +10,7 @@ public class TetrominoController : MonoBehaviour
     public TetrominoSpawner newSpawn;
 
     private Vector3 lastPosition; // Store the last known position
+    private Quaternion lastRotation;
 
 
 
@@ -53,7 +54,7 @@ public class TetrominoController : MonoBehaviour
             yield return new WaitForSeconds(fallInterval);
 
             userMovementScript.MoveDown();
-            if (transform.position == lastPosition)
+            if (transform.position == lastPosition && transform.rotation == lastRotation)
             {
                 LockBlockScript = GetComponent<LockTetromino>();
                 LockBlockScript.SetCorrectAttributes();
@@ -63,6 +64,7 @@ public class TetrominoController : MonoBehaviour
             }
 
             lastPosition = transform.position;
+            lastRotation = transform.rotation;
         }
     }
 }
