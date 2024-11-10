@@ -19,12 +19,12 @@ public class TetrominoSpawner : MonoBehaviour
 
     void Start()
     {
-        gameSpeed = GetComponent<GameInitializer>();
-        if (gameSpeed == null)
-        {
-            Debug.LogError("GameInitializer component is missing!");
-            return;
-        }
+        //gameSpeed = GetComponent<GameInitializer>();
+        //if (gameSpeed == null)
+        //{
+        //    Debug.LogError("GameInitializer component is missing!");
+        //    return;
+        //}
 
         gameBoard = FindObjectOfType<CreateGameBoard>();
         if (gameBoard == null || gameBoard.topRowSquares.Count == 0)
@@ -67,16 +67,16 @@ public class TetrominoSpawner : MonoBehaviour
             newTetromino.transform.Translate(-0.5f, -0.5f, 0); // Move left by 0.5 units
         }
 
-        Rigidbody2D rb = newTetromino.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.gravityScale = 0;
-            rb.AddForce(new Vector2(0, -gameSpeed.GetSpeed()), ForceMode2D.Impulse);  // Apply instant downward force        }
+        //Rigidbody2D rb = newTetromino.GetComponent<Rigidbody2D>();
+        //if (rb != null)
+        //{
+        //    rb.bodyType = RigidbodyType2D.Dynamic;
+        //    rb.gravityScale = 0;
+        //    rb.AddForce(new Vector2(0, -gameSpeed.GetSpeed()), ForceMode2D.Impulse);  // Apply instant downward force        }
 
-            spawnTimer.Duration = Mathf.Abs(gameSpeed.GetSpeed()); // Optional: Adjust spawn timer
-            spawnTimer.Run();
-        }
+        //    spawnTimer.Duration = Mathf.Abs(gameSpeed.GetSpeed()); // Optional: Adjust spawn timer
+        //    spawnTimer.Run();
+        //}
     }
 
     public void HandleGameOver()

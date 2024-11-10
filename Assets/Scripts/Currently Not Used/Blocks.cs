@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events; // Add this directive
 
-public class blocks : MonoBehaviour
+public class Blocks : MonoBehaviour
 {
     public UnityEvent GameOverEvent = new UnityEvent(); // Declare UnityEvent
     private Rigidbody2D tetrominoRB;
