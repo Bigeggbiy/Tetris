@@ -14,34 +14,36 @@ public class CreateGameBoard : MonoBehaviour
     CreateBoard();  // Create the board early
     }   
 
-    private void CreateBoard(){
-    // Create the main parent object called "GameBoard"
-    GameObject gameBoard = new GameObject("GameBoard");
-
-    float xOffset = (columns * squareSize) / 2f;
-    float yOffset = (rows * squareSize) / 2f;
-
-    for (int row = 1; row <= rows; row++)
+    private void CreateBoard()
     {
-        GameObject rowParent = new GameObject("Row_" + row);
-        rowParent.transform.parent = gameBoard.transform;
+        // Create the main parent object called "GameBoard"
+        GameObject gameBoard = new GameObject("GameBoard");
+        gameBoard.AddComponent<IsFilled>();
 
-        for (int col = 1; col <= columns; col++)
+        float xOffset = (columns * squareSize) / 2f;
+        float yOffset = (rows * squareSize) / 2f;
+
+        for (int row = 1; row <= rows; row++)
         {
-            float xPos = (col * squareSize) - xOffset;
-            float yPos = (row * squareSize) - yOffset + 1;
+            GameObject rowParent = new GameObject("Row_" + row);
+            rowParent.transform.parent = gameBoard.transform;
 
-            GameObject square = Instantiate(squarePrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
-            square.name = "Square_" + row + "_" + col;
-            square.transform.parent = rowParent.transform;
-
-            if (row == rows)  // Store top row squares
+            for (int col = 1; col <= columns; col++)
             {
-                topRowSquares.Add(square.transform);
+                float xPos = (col * squareSize) - xOffset;
+                float yPos = (row * squareSize) - yOffset + 1;
+
+                GameObject square = Instantiate(squarePrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
+                square.name = "Square_" + row + "_" + col;
+                square.transform.parent = rowParent.transform;
+
+                if (row == rows)  // Store top row squares
+                {
+                    topRowSquares.Add(square.transform);
+                }
             }
         }
-    }
 
-    gameBoard.transform.position = new Vector3(0, -0.5f, 0);
+        gameBoard.transform.position = new Vector3(0, -0.5f, 0);
     }
 }

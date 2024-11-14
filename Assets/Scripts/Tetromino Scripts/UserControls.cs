@@ -8,7 +8,9 @@ using static Unity.VisualScripting.Metadata;
 public class UserControls : MonoBehaviour
 {
     public float moveDistance = 1f; // Pieces move 1 unit per input
-                                   
+    public string TetrominoTag = "Tetromino";
+    public float detectionRadius = .5f;
+
     void Start() 
     {
         
@@ -16,85 +18,81 @@ public class UserControls : MonoBehaviour
 
     public void UserInput()
     {
+        // Each of these take a keypress, move the piece, check if the move was valid, and if not move it back
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            transform.Rotate(0, 0, -90);
+            transform.rotation *= Quaternion.Euler(0, 0, -90);
+            
+            if (CollisionCheck(gameObject) || !canMove())
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, 90);
+            }
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (!DetectCollision(Vector2.left))
+            MovePiece(Vector3.left);
+            if (CollisionCheck(gameObject) || !canMove())
             {
-                MovePiece(Vector3.left);
-            }
-
-            if (!canMove())
-            { // checks if block was moved to a valid spot, and moves it back if not
                 MovePiece(Vector3.right);
             }
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (!DetectCollision(Vector2.right))
+            MovePiece(Vector3.right);
+            if (CollisionCheck(gameObject) || !canMove())
             {
-                MovePiece(Vector3.right);
-            }
-
-            if (!canMove())
-            { // checks if block was moved to a valid spot, and moves it back if not
                 MovePiece(Vector3.left);
             }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (!DetectCollision(Vector2.down))
-            {
-                MovePiece(Vector3.down);
-            }
 
-            if (!canMove())
-            { // checks if block was moved to a valid spot, and moves it back if not
+            MovePiece(Vector3.down);
+            if (CollisionCheck(gameObject) || !canMove())
+            {
                 MovePiece(Vector3.up);
             }
         }
     }
-    public void MoveDown()
+
+
+    public bool CollisionCheck(GameObject TetrominoPiece)
     {
-        if (!DetectCollision(Vector2.down))
+        // Iterates through each block in a piece and checks if it collides with another Tetromino
+        foreach (Transform block in TetrominoPiece.transform)
         {
-            MovePiece(Vector3.down);
-        }
-
-        if (!canMove())
-        { // checks if block was moved to a valid spot, and moves it back if not
-            MovePiece(Vector3.up);
-        }
-    }
-
-    bool DetectCollision(Vector2 direction)
-    {
-        foreach (Transform child in transform)
-        {
-            // Get the ChildScript component from the child object
-            BlockCollisionCheck childScript = child.GetComponent<BlockCollisionCheck>();
-
-            // If any child has the condition met, ignore the key press
-            if (childScript != null && childScript.SquareCollisionCheck(direction))
+            Collider2D blockCollider = block.GetComponent<Collider2D>();
+            if (blockCollider != null)
             {
-                return true; // Exit the method early to ignore the key press
+                // Check if overlapping with any colliders with the target tag
+                Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(block.position, detectionRadius);
+
+                foreach (Collider2D collider in overlappingColliders)
+                {
+                    if (collider.CompareTag(TetrominoTag))
+                    {
+                        return true;
+                    }
+                }
             }
         }
 
         return false;
     }
 
+
+    public void MoveDown()
+    {
+        MovePiece(Vector3.down);
+        if (CollisionCheck(gameObject) || !canMove())
+        {
+            MovePiece(Vector3.up);
+        }
+    }
+
     void MovePiece(Vector3 direction)
     {
         transform.position += direction * moveDistance;
-    }
-
-    void RotateTetromino()
-    {
-        ///need to be implimented
     }
 
     public bool canMove()
@@ -105,7 +103,7 @@ public class UserControls : MonoBehaviour
             int yPos = Mathf.RoundToInt(children.transform.position.y); // gets position of blocks
 
             // checks if blocks are in-bounds
-            if (xPos < -4 || xPos >= 6 || yPos < -8 || yPos >= 12)
+            if (xPos < -4 || xPos >= 6 || yPos < -9 || yPos >= 12)
             {
                 return false;
             }

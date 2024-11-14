@@ -64,9 +64,10 @@
     <Compile Include="Assets\Scripts\Currently Not Used\ScreenUtils.cs" />
     <Compile Include="Assets\Scripts\Tetromino Scripts\LockTetromino.cs" />
     <Compile Include="Assets\Scripts\Camera Scripts\CreateGameboard.cs" />
+    <Compile Include="Assets\Scripts\Currently Not Used\BlockCollisionCheck.cs" />
+    <Compile Include="Assets\Scripts\Game Board Scripts\Square.cs" />
+    <Compile Include="Assets\Scripts\Game Board Scripts\IsFilled.cs" />
     <Compile Include="Assets\Scripts\Currently Not Used\GameInitializer.cs" />
-    <Compile Include="Assets\Scripts\Camera Scripts\Square.cs" />
-    <Compile Include="Assets\Scripts\Tetromino Scripts\BlockCollisionCheck.cs" />
     <Compile Include="Assets\Scripts\Tetromino Scripts\TetrominoController.cs" />
     <Compile Include="Assets\Scripts\Camera Scripts\TetrominoSpawner.cs" />
     <Compile Include="Assets\Scripts\Currently Not Used\ScreenWrapper.cs" />
