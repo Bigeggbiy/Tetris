@@ -19,6 +19,8 @@ public class CreateGameBoard : MonoBehaviour
         // Create the main parent object called "GameBoard"
         GameObject gameBoard = new GameObject("GameBoard");
         gameBoard.AddComponent<IsFilled>();
+        gameBoard.AddComponent<lineClear>();
+
 
         float xOffset = (columns * squareSize) / 2f;
         float yOffset = (rows * squareSize) / 2f;
