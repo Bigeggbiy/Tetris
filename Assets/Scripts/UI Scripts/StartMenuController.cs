@@ -5,6 +5,6 @@ public class StartMenuController : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("Main scene");
+        SceneManager.LoadScene("Game scene");
     }
 }
