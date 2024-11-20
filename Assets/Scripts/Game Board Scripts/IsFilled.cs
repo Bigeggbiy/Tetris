@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Search;
 using UnityEngine;
 
 public class IsFilled : MonoBehaviour
@@ -37,6 +38,11 @@ public class IsFilled : MonoBehaviour
                         {
                             Square hasPieceBool = cell.GetComponent<Square>();
                             hasPieceBool.hasPiece = true;
+                        }
+                        else
+                        {
+                            Square hasPieceBool = cell.GetComponent<Square>();
+                            hasPieceBool.hasPiece = false;
                         }
                     }
 

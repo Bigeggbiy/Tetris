@@ -16,6 +16,7 @@ public class lineClear : MonoBehaviour
     void CheckAndClearFilledRows()
     {
         List<Transform> rowsToClear = new List<Transform>();
+        List<Transform> rowsAbove = new List<Transform>();
 
         // Loop through each row of the game board
         foreach (Transform row in transform)
@@ -43,13 +44,30 @@ public class lineClear : MonoBehaviour
             {
                 rowsToClear.Add(row);
             }
+            // If any row or rows are marked for clearing, begin adding all the remaining rows to ensure the blocks are shifted downward.
+            else if (rowsToClear.Count > 0)
+            {
+                rowsAbove.Add(row);
+            }
         }
 
-        // Clear the filled rows and shift above rows down
+        // Clear the filled rows
         foreach (Transform row in rowsToClear)
         {
             ClearRow(row);
-            ShiftRowsDown(row);
+        }
+
+        // Check if a row has been cleared
+        if (rowsToClear.Count > 0)
+        {
+            // Iterate through all the rows above and move the blocks down
+            foreach (Transform rows in rowsAbove)
+            {
+                ShiftRowsDown(rows, rowsToClear.Count);
+            }
+
+            rowsToClear.Clear();
+            rowsAbove.Clear();
         }
     }
 
@@ -69,37 +87,54 @@ public class lineClear : MonoBehaviour
             }
         }
     }
-
-    void ShiftRowsDown(Transform clearedRow)
+    void ShiftRowsDown(Transform row, int distanceDown)
     {
-        int clearedRowIndex = clearedRow.GetSiblingIndex();
-
-        // Loop through rows above the cleared row
-        for (int rowIndex = clearedRowIndex - 1; rowIndex >= 0; rowIndex--)
+        // Move all blocks down
+        foreach (Transform cell in row)
         {
-            Transform aboveRow = transform.GetChild(rowIndex);
-            Transform targetRow = transform.GetChild(rowIndex + 1);
+            Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
 
-            foreach (Transform cell in aboveRow)
+            foreach (Collider2D collider in overlappingColliders)
             {
-                Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
-
-                foreach (Collider2D collider in overlappingColliders)
+                if (collider.CompareTag(targetTag))
                 {
-                    if (collider.CompareTag(targetTag))
-                    {
-                        Transform block = collider.transform;
-                        
-                        // Move block down
-                        block.position += Vector3.down;
-
-                        // Update parent to the target cell
-                        Transform newCell = targetRow.GetChild(cell.GetSiblingIndex());
-                        block.SetParent(newCell);
-                        block.localPosition = Vector3.zero; // Align block in new cell
-                    }
+                    collider.transform.position += Vector3.down * distanceDown;
                 }
             }
         }
     }
+
+
+    //void ShiftRowsDown(Transform clearedRow)
+    //{
+    //    int clearedRowIndex = clearedRow.GetSiblingIndex();
+
+    //    // Loop through rows above the cleared row
+    //    for (int rowIndex = clearedRowIndex - 1; rowIndex >= 0; rowIndex--)
+    //    {
+    //        Transform aboveRow = transform.GetChild(rowIndex);
+    //        Transform targetRow = transform.GetChild(rowIndex + 1);
+
+    //        foreach (Transform cell in aboveRow)
+    //        {
+    //            Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
+
+    //            foreach (Collider2D collider in overlappingColliders)
+    //            {
+    //                if (collider.CompareTag(targetTag))
+    //                {
+    //                    Transform block = collider.transform;
+
+    //                    // Move block down
+    //                    block.position += Vector3.down;
+
+    //                    // Update parent to the target cell
+    //                    Transform newCell = targetRow.GetChild(cell.GetSiblingIndex());
+    //                    block.SetParent(newCell);
+    //                    block.localPosition = Vector3.zero; // Align block in new cell
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 }
