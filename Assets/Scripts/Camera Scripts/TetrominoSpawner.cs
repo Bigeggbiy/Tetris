@@ -11,8 +11,8 @@ public class TetrominoSpawner : MonoBehaviour
     [SerializeField] GameObject tetrominoT;
     [SerializeField] GameObject tetrominoZ;
 
-    private Timer spawnTimer;
-    private GameInitializer gameSpeed;
+    //private Timer spawnTimer;
+    //private GameInitializer gameSpeed;
     private CreateGameBoard gameBoard;  // Reference to the game board
 
     private List<GameObject> tetrominoPrefabs;
@@ -42,13 +42,14 @@ public class TetrominoSpawner : MonoBehaviour
             tetrominoI, tetrominoJ, tetrominoL,
             tetrominoO, tetrominoS, tetrominoT, tetrominoZ
         };
-        SpawnTetromino();
+        float initialFallInterval = 2f; // Initially falls every 2 seconds
+        SpawnTetromino(initialFallInterval);
     }
 
     /// <summary>
     /// Spawns a random Tetromino at a random square in the top row.
     /// </summary>
-    public void SpawnTetromino()
+    public void SpawnTetromino(float currentFallInterval)
     {
         if (tetrominoPrefabs.Count == 0) return;
 
@@ -56,6 +57,14 @@ public class TetrominoSpawner : MonoBehaviour
         Transform randomSquare = gameBoard.topRowSquares[4];
 
         GameObject newTetromino = Instantiate(randomTetromino, randomSquare.position, Quaternion.identity);
+        //newTetromino.transform.Translate(0, 1f, 0); // So it spawns above the board
+
+        // Preserves fall interval rate for new tetromino spawn
+        TetrominoController tetrominoController = newTetromino.GetComponent<TetrominoController>();
+        if (tetrominoController != null)
+        {
+            tetrominoController.fallInterval = currentFallInterval; // pass updated interval
+        }
 
         // Apply half-unit translation for tetrominoI and tetrominoO
         if (randomTetromino == tetrominoI)
@@ -67,20 +76,10 @@ public class TetrominoSpawner : MonoBehaviour
             newTetromino.transform.Translate(-0.5f, -0.5f, 0); // Move left by 0.5 units
         }
 
-        //Rigidbody2D rb = newTetromino.GetComponent<Rigidbody2D>();
-        //if (rb != null)
-        //{
-        //    rb.bodyType = RigidbodyType2D.Dynamic;
-        //    rb.gravityScale = 0;
-        //    rb.AddForce(new Vector2(0, -gameSpeed.GetSpeed()), ForceMode2D.Impulse);  // Apply instant downward force        }
-
-        //    spawnTimer.Duration = Mathf.Abs(gameSpeed.GetSpeed()); // Optional: Adjust spawn timer
-        //    spawnTimer.Run();
-        //}
     }
 
-    public void HandleGameOver()
+    /*public void HandleGameOver()
     {
         spawnTimer.Pause();
-    }
+    } */
 }

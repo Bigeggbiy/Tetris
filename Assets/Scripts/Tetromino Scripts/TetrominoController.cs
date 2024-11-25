@@ -12,12 +12,16 @@ public class TetrominoController : MonoBehaviour
     private Vector3 lastPosition; // Store the last known position
     private Quaternion lastRotation;
 
-
-
-
-    //private UserControls userControls;
-    public float fallInterval = 2f; // Time between downward steps (in seconds)
-    //private GameInitializer gameInitializer;
+    // Initial time between downward steps (in seconds)
+    private static float _fallInterval = 2f;
+    public float fallInterval // So TetrominoSpawner can access
+    {
+        get { return _fallInterval; }
+        set { _fallInterval = value; }
+    }
+    private static float elapsedTime = 0f; // Tracks time since game start
+    private const float speedIncreaseInterval = 30f; // Speed increases after 30 seconds
+    private const float speedMultiplier = 0.9f; // Multiplier to reduce fallInterval to 90% of its current value
     private bool isFalling = true;
 
     void Start()
@@ -45,20 +49,37 @@ public class TetrominoController : MonoBehaviour
     void Update()
     {
         userMovementScript.UserInput();
+
+        // Update timer
+        elapsedTime += Time.deltaTime;
+
+        // Check if 30 seconds have passed
+        if (elapsedTime >= speedIncreaseInterval)
+        {
+            elapsedTime = 0f; // Reset timer
+            fallInterval *= speedMultiplier; // Decrease fallInterval
+            fallInterval = Mathf.Max(fallInterval, 0.1f); // Set minimum value for fallInterval
+            Debug.Log($"Increased speed, new fallInterval is {fallInterval}");
+
+        }
     }
 
     private IEnumerator FallCoroutine()
     {
         while (isFalling)
         {
+            float currentFallInterval = fallInterval;
+            Debug.Log("Waiting for fall interval: " + fallInterval);
             yield return new WaitForSeconds(fallInterval);
 
+            //Debug.Log("Tetromino moved down.");
             userMovementScript.MoveDown();
+
             if (transform.position == lastPosition && transform.rotation == lastRotation)
             {
                 LockBlockScript = GetComponent<LockTetromino>();
                 LockBlockScript.SetCorrectAttributes();
-                newSpawn.SpawnTetromino();
+                newSpawn.SpawnTetromino(fallInterval);
 
                 isFalling = false;
             }
