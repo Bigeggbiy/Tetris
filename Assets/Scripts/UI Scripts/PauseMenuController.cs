@@ -32,4 +32,9 @@ public class PauseMenuController : MonoBehaviour
         Time.timeScale = 0f; // Freeze game time
         isPaused = true;
     }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
