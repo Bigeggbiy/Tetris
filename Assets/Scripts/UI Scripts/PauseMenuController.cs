@@ -31,6 +31,7 @@ public class PauseMenuController : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f; // Freeze game time
         isPaused = true;
+
     }
 
     public void RestartGame()
