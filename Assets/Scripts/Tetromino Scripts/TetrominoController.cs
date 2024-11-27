@@ -59,7 +59,7 @@ public class TetrominoController : MonoBehaviour
             elapsedTime = 0f; // Reset timer
             fallInterval *= speedMultiplier; // Decrease fallInterval
             fallInterval = Mathf.Max(fallInterval, 0.1f); // Set minimum value for fallInterval
-            Debug.Log($"Increased speed, new fallInterval is {fallInterval}");
+            //Debug.Log($"Increased speed, new fallInterval is {fallInterval}");
 
         }
     }
@@ -69,7 +69,7 @@ public class TetrominoController : MonoBehaviour
         while (isFalling)
         {
             float currentFallInterval = fallInterval;
-            Debug.Log("Waiting for fall interval: " + fallInterval);
+            //Debug.Log("Waiting for fall interval: " + fallInterval);
             yield return new WaitForSeconds(fallInterval);
 
             //Debug.Log("Tetromino moved down.");

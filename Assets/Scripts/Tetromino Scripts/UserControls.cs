@@ -9,7 +9,10 @@ public class UserControls : MonoBehaviour
 {
     public float moveDistance = 1f; // Pieces move 1 unit per input
     public string TetrominoTag = "Tetromino";
-    public float detectionRadius = .5f;
+    public float detectionRadius = .35f; // Slightly less than half of the grid size
+
+    public float fallSpeed = 0.1f; // This is the falling speed when holding the down arrow
+    public float nextFallTime; // Tracks when the piece can move down next
 
     void Start() 
     {
@@ -44,10 +47,15 @@ public class UserControls : MonoBehaviour
                 MovePiece(Vector3.left);
             }
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
-
-            MovePiece(Vector3.down);
+            // Check if enough time has passed to move down again
+            if (Time.time >= nextFallTime)
+            {
+                MovePiece(Vector3.down);
+                nextFallTime = Time.time + fallSpeed; // Updates cooldown
+            }
+ 
             if (CollisionCheck(gameObject) || !canMove())
             {
                 MovePiece(Vector3.up);
@@ -71,6 +79,7 @@ public class UserControls : MonoBehaviour
                 {
                     if (collider.CompareTag(TetrominoTag))
                     {
+                        Debug.Log($"Collision at {block.position} with {collider.name}");
                         return true;
                     }
                 }
@@ -92,8 +101,17 @@ public class UserControls : MonoBehaviour
 
     void MovePiece(Vector3 direction)
     {
+        Vector3 originalPosition = transform.position;
         transform.position += direction * moveDistance;
+        Debug.Log($"Moved piece to {transform.position}");
+
+        if (CollisionCheck(gameObject) || !canMove())
+        {
+            transform.position = originalPosition; // Undo movement
+            Debug.LogWarning($"Collision detected ");
+        }
     }
+
 
     public bool canMove()
     {
@@ -103,7 +121,7 @@ public class UserControls : MonoBehaviour
             int yPos = Mathf.RoundToInt(children.transform.position.y); // gets position of blocks
 
             // checks if blocks are in-bounds
-            if (xPos < -4 || xPos >= 6 || yPos < -9 || yPos >= 12)
+            if (xPos < -4 || xPos >= 6 || yPos < -9 || yPos >= 120)  // yPos set to >= 120 for testing, should be 12
             {
                 return false;
             }
