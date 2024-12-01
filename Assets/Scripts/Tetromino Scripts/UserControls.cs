@@ -103,7 +103,7 @@ public class UserControls : MonoBehaviour
     {
         Vector3 originalPosition = transform.position;
         transform.position += direction * moveDistance;
-        Debug.Log($"Moved piece to {transform.position}");
+        //Debug.Log($"Moved piece to {transform.position}");
 
         if (CollisionCheck(gameObject) || !canMove())
         {

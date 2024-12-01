@@ -10,11 +10,12 @@ public class lineClear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckAndClearFilledRows();
+        //CheckAndClearFilledRows();
     }
 
-    void CheckAndClearFilledRows()
+    public int CheckAndClearFilledRows()
     {
+        int rowsCleared = 0;
         List<Transform> rowsToClear = new List<Transform>();
         List<Transform> rowsAbove = new List<Transform>();
 
@@ -22,6 +23,7 @@ public class lineClear : MonoBehaviour
         foreach (Transform row in transform)
         {
             int filledCells = 0;
+            Debug.Log(row.name);
 
             // Loop through each cell in the row
             foreach (Transform cell in row)
@@ -57,6 +59,8 @@ public class lineClear : MonoBehaviour
             ClearRow(row);
         }
 
+        
+
         // Check if a row has been cleared
         if (rowsToClear.Count > 0)
         {
@@ -66,9 +70,18 @@ public class lineClear : MonoBehaviour
                 ShiftRowsDown(rows, rowsToClear.Count);
             }
 
+            rowsCleared = rowsToClear.Count;
+
             rowsToClear.Clear();
             rowsAbove.Clear();
         }
+        else
+        {
+            // Resets combo since no lines were cleared
+            rowsCleared = 0;
+        }
+
+        return rowsCleared;
     }
 
     void ClearRow(Transform row)
@@ -104,37 +117,11 @@ public class lineClear : MonoBehaviour
         }
     }
 
-
-    //void ShiftRowsDown(Transform clearedRow)
+    //public int ReturnCurrentScore()
     //{
-    //    int clearedRowIndex = clearedRow.GetSiblingIndex();
-
-    //    // Loop through rows above the cleared row
-    //    for (int rowIndex = clearedRowIndex - 1; rowIndex >= 0; rowIndex--)
-    //    {
-    //        Transform aboveRow = transform.GetChild(rowIndex);
-    //        Transform targetRow = transform.GetChild(rowIndex + 1);
-
-    //        foreach (Transform cell in aboveRow)
-    //        {
-    //            Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
-
-    //            foreach (Collider2D collider in overlappingColliders)
-    //            {
-    //                if (collider.CompareTag(targetTag))
-    //                {
-    //                    Transform block = collider.transform;
-
-    //                    // Move block down
-    //                    block.position += Vector3.down;
-
-    //                    // Update parent to the target cell
-    //                    Transform newCell = targetRow.GetChild(cell.GetSiblingIndex());
-    //                    block.SetParent(newCell);
-    //                    block.localPosition = Vector3.zero; // Align block in new cell
-    //                }
-    //            }
-    //        }
-    //    }
+    //    //
+    //    return currentScore;
     //}
+
+    
 }

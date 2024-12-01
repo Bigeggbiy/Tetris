@@ -7,6 +7,9 @@ public class CreateGameBoard : MonoBehaviour
     public int columns = 10; // Number of squares per row
     public int rows = 20;    // Number of rows
     public float squareSize = 1f; // Size of each square
+    public float redRate = 0f;
+    public float greenRate = 0f;
+    public float blueRate = 0f;
 
     public List<Transform> topRowSquares = new List<Transform>();  // Stores positions of squares in the top row
 
@@ -18,8 +21,10 @@ public class CreateGameBoard : MonoBehaviour
     {
         // Create the main parent object called "GameBoard"
         GameObject gameBoard = new GameObject("GameBoard");
+        gameBoard.tag = "Game Board";
         gameBoard.AddComponent<IsFilled>();
         gameBoard.AddComponent<lineClear>();
+        
 
 
         float xOffset = (columns * squareSize) / 2f;
@@ -39,6 +44,7 @@ public class CreateGameBoard : MonoBehaviour
                 square.name = "Square_" + row + "_" + col;
                 square.transform.parent = rowParent.transform;
 
+
                 if (row == rows)  // Store top row squares
                 {
                     topRowSquares.Add(square.transform);
@@ -47,5 +53,24 @@ public class CreateGameBoard : MonoBehaviour
         }
 
         gameBoard.transform.position = new Vector3(0, -0.5f, 0);
+
+        SetGameBoardColors(gameBoard);
     }
+
+    void SetGameBoardColors(GameObject gameBoard)
+    {
+        foreach (Transform row in gameBoard.transform)
+        {
+            // Move all blocks down
+            foreach (Transform cell in row)
+            {
+                Debug.Log(cell);
+                cell.GetComponent<BoardCellColor>().SetOutlineColorByValue(redRate, greenRate, blueRate);
+                redRate -= .005f % 1;
+                blueRate -= .003f;
+                greenRate -= 0;
+            }
+        }
+    }
+
 }

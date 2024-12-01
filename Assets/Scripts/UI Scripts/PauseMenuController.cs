@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenuController : MonoBehaviour
 {
     public GameObject pauseMenuUI; // Drag your Pause Menu Panel here in the Inspector
+    public GameObject gameOverUI;
     private bool isPaused = false;
 
     void Update()
@@ -37,6 +38,21 @@ public class PauseMenuController : MonoBehaviour
     public void RestartGame()
     {
         ResumeGame();
+        SceneManager.LoadScene("Main Menu Scene");
+        //SceneManager.LoadScene("Game Scene");
         SceneManager.LoadScene("Game Scene");
+    }
+
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu Scene");
+    }
+
+
+    public void EndGame()
+    {
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0f; // Freeze game time
+        isPaused = true;
     }
 }

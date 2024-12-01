@@ -8,6 +8,7 @@ public class TetrominoController : MonoBehaviour
     public LockTetromino LockBlockScript;
     public UserControls userMovementScript;
     public TetrominoSpawner newSpawn;
+    public lineClear clearline;
 
     private Vector3 lastPosition; // Store the last known position
     private Quaternion lastRotation;
@@ -30,20 +31,11 @@ public class TetrominoController : MonoBehaviour
         userMovementScript = GetComponent<UserControls>();
         LockBlockScript = GetComponent<LockTetromino>();
         newSpawn = Camera.main.GetComponent<TetrominoSpawner>();
+        //clearline = Camera.main.GetComponent<lineClear>();
 
 
 
         StartCoroutine(FallCoroutine());
-
-
-        //userControls = GetComponent<UserControls>(); // reference to userControls
-        //gameInitializer = FindObjectOfType<GameInitializer>();
-        //if (gameInitializer != null)
-        //{
-        //    // Calculate initial fall interval based on game speed
-        //    fallInterval = Mathf.Abs(1f / gameInitializer.GetSpeed());
-        //    StartCoroutine(FallCoroutine());
-        //}
     }
 
     void Update()
@@ -79,6 +71,7 @@ public class TetrominoController : MonoBehaviour
             {
                 LockBlockScript = GetComponent<LockTetromino>();
                 LockBlockScript.SetCorrectAttributes();
+                //clearline.CheckAndClearFilledRows();
                 newSpawn.SpawnTetromino(fallInterval);
 
                 isFalling = false;

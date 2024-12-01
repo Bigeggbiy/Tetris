@@ -13,7 +13,7 @@ public class IsFilled : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DetectOverlap();
+        //DetectOverlap();
     }
 
     void DetectOverlap()
