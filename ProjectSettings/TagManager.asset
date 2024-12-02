@@ -3,24 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Cell
-  - background
-  - Tetromino
-  - Moving Tetromino
-  - Game Board
-  - End Game UI
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Moving Tetromino
+  - 
   - Water
   - UI
-  - Cell
-  - Stopped Tetromino
-  - Testing
-  - Background
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
