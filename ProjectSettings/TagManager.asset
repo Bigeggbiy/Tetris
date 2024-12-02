@@ -8,6 +8,8 @@ TagManager:
   - background
   - Tetromino
   - Moving Tetromino
+  - Game Board
+  - End Game UI
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Cell
   - Stopped Tetromino
   - Testing
-  - 
+  - Background
   - 
   - 
   - 

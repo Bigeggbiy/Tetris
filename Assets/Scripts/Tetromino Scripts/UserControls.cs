@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events; // Add this directive
-using static Unity.VisualScripting.Metadata;
 
 public class UserControls : MonoBehaviour
 {
@@ -103,7 +102,7 @@ public class UserControls : MonoBehaviour
     {
         Vector3 originalPosition = transform.position;
         transform.position += direction * moveDistance;
-        Debug.Log($"Moved piece to {transform.position}");
+        //Debug.Log($"Moved piece to {transform.position}");
 
         if (CollisionCheck(gameObject) || !canMove())
         {

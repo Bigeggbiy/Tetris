@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class IsFilled : MonoBehaviour
@@ -13,7 +12,7 @@ public class IsFilled : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DetectOverlap();
+        //DetectOverlap();
     }
 
     void DetectOverlap()
