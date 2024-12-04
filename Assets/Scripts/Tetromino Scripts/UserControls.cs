@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events; // Add this directive
-using static Unity.VisualScripting.Metadata;
 
 public class UserControls : MonoBehaviour
 {
@@ -14,10 +13,6 @@ public class UserControls : MonoBehaviour
     public float fallSpeed = 0.1f; // This is the falling speed when holding the down arrow
     public float nextFallTime; // Tracks when the piece can move down next
 
-    void Start() 
-    {
-        
-    }
 
     public void UserInput()
     {
@@ -103,7 +98,6 @@ public class UserControls : MonoBehaviour
     {
         Vector3 originalPosition = transform.position;
         transform.position += direction * moveDistance;
-        Debug.Log($"Moved piece to {transform.position}");
 
         if (CollisionCheck(gameObject) || !canMove())
         {
@@ -121,7 +115,7 @@ public class UserControls : MonoBehaviour
             int yPos = Mathf.RoundToInt(children.transform.position.y); // gets position of blocks
 
             // checks if blocks are in-bounds
-            if (xPos < -4 || xPos >= 6 || yPos < -9 || yPos >= 120)  // yPos set to >= 120 for testing, should be 12
+            if (xPos < -4 || xPos >= 6 || yPos < -9 || yPos >= 120)  
             {
                 return false;
             }

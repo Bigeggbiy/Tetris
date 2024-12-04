@@ -7,4 +7,9 @@ public class StartMenuController : MonoBehaviour
     {
         SceneManager.LoadScene("Game scene");
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

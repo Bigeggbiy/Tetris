@@ -7,21 +7,18 @@ public class lineClear : MonoBehaviour
     public float detectionRadius = 0.5f;  // Radius for overlap detection
     public int columns = 10;              // Number of columns in the game board
 
-    // Update is called once per frame
-    void Update()
-    {
-        CheckAndClearFilledRows();
-    }
 
-    void CheckAndClearFilledRows()
+    public int CheckAndClearFilledRows()
     {
-        List<Transform> rowsToClear = new List<Transform>();
-        List<Transform> rowsAbove = new List<Transform>();
+        int rowsCleared = 0; // Keeps track of the number of rows cleared in this operation
+        List<Transform> rowsToClear = new List<Transform>(); // Stores rows that are fully filled and need to be cleared
+        List<Transform> rowsAbove = new List<Transform>(); // Stores rows above the cleared rows for shifting down
 
         // Loop through each row of the game board
         foreach (Transform row in transform)
         {
-            int filledCells = 0;
+            int filledCells = 0; // Count of filled cells in the current row
+            Debug.Log(row.name); // Debug log to track the row being processed
 
             // Loop through each cell in the row
             foreach (Transform cell in row)
@@ -31,110 +28,87 @@ public class lineClear : MonoBehaviour
 
                 foreach (Collider2D collider in overlappingColliders)
                 {
+                    // Check if the collider matches the target tag (indicating a filled cell)
                     if (collider.CompareTag(targetTag))
                     {
-                        filledCells++;
-                        break; // No need to check further for this cell
+                        filledCells++; // Increment the filled cell count
+                        break; // Exit loop since we only need to confirm one valid collider per cell
                     }
                 }
             }
 
-            // If all columns in the row are filled, mark it for clearing
+            // If the row is fully filled, mark it for clearing
             if (filledCells >= columns)
             {
-                rowsToClear.Add(row);
+                rowsToClear.Add(row); // Add the filled row to the list of rows to clear
             }
-            // If any row or rows are marked for clearing, begin adding all the remaining rows to ensure the blocks are shifted downward.
+            // If rows are marked for clearing, any remaining rows above them are tracked for shifting
             else if (rowsToClear.Count > 0)
             {
-                rowsAbove.Add(row);
+                rowsAbove.Add(row); // Add this row to the list of rows above cleared rows
             }
         }
 
         // Clear the filled rows
         foreach (Transform row in rowsToClear)
         {
-            ClearRow(row);
+            ClearRow(row); // Call the ClearRow method to remove blocks in the filled row
         }
 
-        // Check if a row has been cleared
+        // If rows were cleared, handle shifting rows above down
         if (rowsToClear.Count > 0)
         {
-            // Iterate through all the rows above and move the blocks down
+            // Move rows above the cleared rows downward
             foreach (Transform rows in rowsAbove)
             {
-                ShiftRowsDown(rows, rowsToClear.Count);
+                ShiftRowsDown(rows, rowsToClear.Count); 
             }
 
+            rowsCleared = rowsToClear.Count;
             rowsToClear.Clear();
-            rowsAbove.Clear();
+            rowsAbove.Clear(); 
         }
+        else
+        {
+            rowsCleared = 0; // Reset cleared row count if no rows were cleared
+        }
+
+        return rowsCleared; 
     }
 
     void ClearRow(Transform row)
     {
-        // Destroy all blocks in the row
+        // Destroy all blocks in the specified row
         foreach (Transform cell in row)
         {
             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
 
             foreach (Collider2D collider in overlappingColliders)
             {
+                // Destroy blocks that match the target tag
                 if (collider.CompareTag(targetTag))
                 {
-                    Destroy(collider.gameObject);
+                    Destroy(collider.gameObject); // Remove the block from the game
                 }
             }
         }
     }
+
     void ShiftRowsDown(Transform row, int distanceDown)
     {
-        // Move all blocks down
+        // Move all blocks in the specified row downward
         foreach (Transform cell in row)
         {
             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
 
             foreach (Collider2D collider in overlappingColliders)
             {
+                // Move blocks that match the target tag
                 if (collider.CompareTag(targetTag))
                 {
-                    collider.transform.position += Vector3.down * distanceDown;
+                    collider.transform.position += Vector3.down * distanceDown; // Adjust the position downward
                 }
             }
         }
     }
-
-
-    //void ShiftRowsDown(Transform clearedRow)
-    //{
-    //    int clearedRowIndex = clearedRow.GetSiblingIndex();
-
-    //    // Loop through rows above the cleared row
-    //    for (int rowIndex = clearedRowIndex - 1; rowIndex >= 0; rowIndex--)
-    //    {
-    //        Transform aboveRow = transform.GetChild(rowIndex);
-    //        Transform targetRow = transform.GetChild(rowIndex + 1);
-
-    //        foreach (Transform cell in aboveRow)
-    //        {
-    //            Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(cell.position, detectionRadius);
-
-    //            foreach (Collider2D collider in overlappingColliders)
-    //            {
-    //                if (collider.CompareTag(targetTag))
-    //                {
-    //                    Transform block = collider.transform;
-
-    //                    // Move block down
-    //                    block.position += Vector3.down;
-
-    //                    // Update parent to the target cell
-    //                    Transform newCell = targetRow.GetChild(cell.GetSiblingIndex());
-    //                    block.SetParent(newCell);
-    //                    block.localPosition = Vector3.zero; // Align block in new cell
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 }

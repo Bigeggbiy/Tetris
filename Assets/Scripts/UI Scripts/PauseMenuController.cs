@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
-    public GameObject pauseMenuUI; // Drag your Pause Menu Panel here in the Inspector
+    public GameObject pauseMenuUI; 
+    public GameObject gameOverUI;
     private bool isPaused = false;
 
+
+    private void Start()
+    {
+        ResumeGame();
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) // Escape key toggles pause
@@ -22,6 +28,7 @@ public class PauseMenuController : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenuUI.SetActive(false);
+        gameOverUI.SetActive(false);
         Time.timeScale = 1f; // Resume game time
         isPaused = false;
     }
@@ -38,5 +45,18 @@ public class PauseMenuController : MonoBehaviour
     {
         ResumeGame();
         SceneManager.LoadScene("Game Scene");
+    }
+
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu Scene");
+    }
+
+
+    public void EndGame()
+    {
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0f; // Freeze game time
+        isPaused = true;
     }
 }
