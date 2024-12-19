@@ -11,137 +11,144 @@ public class TetrominoSpawner : MonoBehaviour
     [SerializeField] GameObject tetrominoT;
     [SerializeField] GameObject tetrominoZ;
 
-    //private Timer spawnTimer;
-    //private GameInitializer gameSpeed;
     private CreateGameBoard gameBoard;  // Reference to the game board
 
     private List<GameObject> tetrominoPrefabs;
 
     private List<GameObject> recentTetrominos = new List<GameObject>();
     private int maxRecentCount = 3;
-    public Transform previewArea; // Assign in the Inspector
+    public Transform previewArea; 
     private GameObject nextTetrominoPreview; // To store the current preview instance
     private List<GameObject> nextTetrominos = new List<GameObject>();
 
     void Start()
     {
-
+        // Find the CreateGameBoard component in the scene to initialize the game board
         gameBoard = FindObjectOfType<CreateGameBoard>();
+
+        // Check if the game board or its top row squares are not initialized
         if (gameBoard == null || gameBoard.topRowSquares.Count == 0)
         {
             Debug.LogError("Game board or top row squares not initialized!");
-            return;
+            return; // Exit if initialization fails
         }
 
-
+        // Initialize the list of Tetromino prefabs
         tetrominoPrefabs = new List<GameObject>
         {
-            tetrominoI, tetrominoJ, tetrominoL,
-            tetrominoO, tetrominoS, tetrominoT, tetrominoZ
+        tetrominoI, tetrominoJ, tetrominoL,
+        tetrominoO, tetrominoS, tetrominoT, tetrominoZ
         };
-        float initialFallInterval = .5f; // Initially falls every 2 seconds
+
+        // Define the initial interval for Tetromino fall (in seconds)
+        float initialFallInterval = 0.5f;
+
+        // Spawn the first Tetromino at the start of the game
         SpawnTetromino(initialFallInterval);
     }
 
     public GameObject CreateNextTetromino()
     {
-
-        if (nextTetrominos.Count > 0) 
-        { 
-            nextTetrominos.RemoveAt(0); 
+        // Remove the first Tetromino in the queue if there are any
+        if (nextTetrominos.Count > 0)
+        {
+            nextTetrominos.RemoveAt(0);
         }
 
+        // Ensure the nextTetrominos list always has at least 2 Tetrominos
         while (nextTetrominos.Count < 2)
         {
             GameObject randomTetromino = null;
             int attempts = 0;
 
-            // Ensure a valid Tetromino is chosen
+            // Keep selecting a random Tetromino until it's not in recent or upcoming lists
             while (randomTetromino == null || recentTetrominos.Contains(randomTetromino) || nextTetrominos.Contains(randomTetromino))
             {
                 randomTetromino = tetrominoPrefabs[Random.Range(0, tetrominoPrefabs.Count)];
                 attempts++;
 
-                // Failsafe to break infinite loop if all Tetrominos are in the recent list
+                // Prevent infinite loop by breaking after 50 attempts
                 if (attempts > 50) break;
             }
 
-            // Add to the upcoming list and recent history
+            // Add the selected Tetromino to the upcoming and recent lists
             nextTetrominos.Add(randomTetromino);
             recentTetrominos.Add(randomTetromino);
 
-            // Maintain max history size
+            // Ensure recentTetrominos doesn't exceed the allowed history size
             if (recentTetrominos.Count > maxRecentCount)
             {
                 recentTetrominos.RemoveAt(0);
             }
         }
 
+        // Update the preview display for the next Tetromino
         UpdatePreview(nextTetrominos[1]);
 
-        // Maintain max history size
+        // Ensure recentTetrominos doesn't exceed the allowed history size (again, for safety)
         if (recentTetrominos.Count > maxRecentCount)
         {
             recentTetrominos.RemoveAt(0);
         }
 
-
+        // Return the first Tetromino in the queue for spawning
         return nextTetrominos[0];
     }
 
     private void UpdatePreview(GameObject nextTetromino)
     {
-        // Remove the previous preview instance, if any
+        // Remove the current preview instance if it exists
         if (nextTetrominoPreview != null)
         {
             Destroy(nextTetrominoPreview);
         }
 
-        // Instantiate a new preview Tetromino
+        // Instantiate a preview Tetromino in the preview area
         nextTetrominoPreview = Instantiate(nextTetromino, previewArea.position, Quaternion.identity);
 
+        // Disable gameplay-related components for the preview
         nextTetrominoPreview.GetComponent<TetrominoController>().enabled = false;
         nextTetrominoPreview.GetComponent<UserControls>().enabled = false;
 
-        // Adjust the z position - (The Tetromino was being displayed behind the black background)
+        // Adjust the Z position to ensure the preview appears in front of the background
         Vector3 adjustedPosition = nextTetrominoPreview.transform.position;
         adjustedPosition.z = -0.1f;
         nextTetrominoPreview.transform.position = adjustedPosition;
 
-        // Scale down and reposition the preview for better visibility
-        //nextTetrominoPreview.transform.localScale *= 0.5f; // Adjust scale as needed
-        nextTetrominoPreview.transform.SetParent(previewArea, true); // Optional: parent it to the preview area
+        // Set the parent of the preview to the preview area
+        nextTetrominoPreview.transform.SetParent(previewArea, true);
     }
 
-    /// Spawns a random Tetromino
     public void SpawnTetromino(float currentFallInterval)
     {
+        // Return early if there are no Tetromino prefabs available
         if (tetrominoPrefabs.Count == 0) return;
 
+        // Generate the next Tetromino to spawn
         GameObject randomTetromino = CreateNextTetromino();
 
-        //GameObject randomTetromino = tetrominoPrefabs[Random.Range(0, tetrominoPrefabs.Count)];
+        // Select the 5th square (center) in the top row for spawning
         Transform randomSquare = gameBoard.topRowSquares[4];
 
+        // Instantiate the Tetromino at the specified position
         GameObject newTetromino = Instantiate(randomTetromino, randomSquare.position, Quaternion.identity);
-        //newTetromino.transform.Translate(0, 1f, 0); // So it spawns above the board
 
-        // Preserves fall interval rate for new tetromino spawn
+        // Set the Tetromino's fall interval
         TetrominoController tetrominoController = newTetromino.GetComponent<TetrominoController>();
         if (tetrominoController != null)
         {
-            tetrominoController.fallInterval = currentFallInterval; // pass updated interval
+            tetrominoController.fallInterval = currentFallInterval; // Pass the updated interval
         }
 
-        // Apply half-unit translation for tetrominoI and tetrominoO
+        // Special adjustments for specific Tetromino shapes
         if (randomTetromino == tetrominoI)
         {
-            newTetromino.transform.Translate(0.5f, -0.5f, 0); // Move right by 0.5 units
+            newTetromino.transform.Translate(0.5f, -0.5f, 0); // Offset for Tetromino I
         }
         else if (randomTetromino == tetrominoO)
         {
-            newTetromino.transform.Translate(-0.5f, -0.5f, 0); // Move left by 0.5 units
+            newTetromino.transform.Translate(-0.5f, -0.5f, 0); // Offset for Tetromino O
         }
-
     }
+
 }

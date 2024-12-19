@@ -21,10 +21,4 @@ public class DisplayScore : MonoBehaviour
 
     }
 
-    //public void GetScore()
-    //{
-    //    scoreText.text = scoringScript.totalScore.ToString();
-    //    levelText.text = scoringScript.currentLevel.ToString();
-    //}
-
 }

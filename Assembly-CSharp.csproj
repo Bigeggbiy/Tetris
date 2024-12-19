@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Currently Not Used\Blocks.cs" />
     <Compile Include="Assets\Scripts\Currently Not Used\ScreenUtils.cs" />
-    <Compile Include="Assets\Scripts\UI Scripts\PreviewNextTetromino.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\PauseMenuController.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\StartMenuController.cs" />
     <Compile Include="Assets\Scripts\Currently Not Used\IsFilled.cs" />
@@ -74,6 +73,7 @@
     <Compile Include="Assets\Scripts\Currently Not Used\Square.cs" />
     <Compile Include="Assets\Scripts\Currently Not Used\BlockCollisionCheck.cs" />
     <Compile Include="Assets\Scripts\Game Board Scripts\BoardCellColor.cs" />
+    <Compile Include="Assets\Scripts\Currently Not Used\PreviewNextTetromino.cs" />
     <Compile Include="Assets\Scripts\Currently Not Used\GameInitializer.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\Display Score.cs" />
     <Compile Include="Assets\Scripts\Tetromino Scripts\TetrominoController.cs" />
